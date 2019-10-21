@@ -5,7 +5,7 @@ $pids = 35100,35105,35150,35170,35205,35206,35207,35229,35240,35337,35360,35476,
 foreach ($propid in $pids)
 {
     echo $propid
-    if (Test-Path "\\fileserver\minerva\$propid" -)
+    if (Test-Path "\\fileserver\minerva\$propid")
     {
         if (!(Test-Path $to\$propid\))
         {
