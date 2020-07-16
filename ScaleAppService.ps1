@@ -66,7 +66,7 @@ if($validRun){
 	    $servicePrincipalConnection=Get-AutomationConnection -Name $connectionName         
 	
 	    "1. Logging in to Azure..."
-	    $result = Add-AzureRmAccount `
+	    $result = Add-AzureAccount `
 	        -ServicePrincipal `
 	        -TenantId $servicePrincipalConnection.TenantId `
 	        -ApplicationId $servicePrincipalConnection.ApplicationId `
@@ -88,17 +88,17 @@ if($validRun){
         #Making sure the order of scaling will not cause resource conflict (since scaling down can potentially not have enough instances)
         if($ScalingDirection -eq 'DOWN'){
         "2. Scaling down, scaling in to Instances[$InstanceCount]..."
-        Set-AzureRmAppServicePlan -ResourceGroupName $ResourceGroupName -Name $AppServicePlanName -NumberofWorkers $InstanceCount	
+        Set-AzAppServicePlan -ResourceGroupName $ResourceGroupName -Name $AppServicePlanName -NumberofWorkers $InstanceCount	
         "3. Scaling down, updating Tier[$Tier], Level[$ScaleLevel]..." 
-        Set-AzureRmAppServicePlan -ResourceGroupName $ResourceGroupName -Name $AppServicePlanName -Tier $Tier -WorkerSize $ScaleLevel
+        Set-AzAppServicePlan -ResourceGroupName $ResourceGroupName -Name $AppServicePlanName -Tier $Tier -WorkerSize $ScaleLevel
         "4. Successfully scaled AppServicePlan[$AppServicePlanName]!"
         
         }else{
         #Making sure scaling up Tier first to maximize instance available for scaling out
         "2. Scaling up, updating Tier[$Tier], Level[$ScaleLevel]..." 
-        Set-AzureRmAppServicePlan -ResourceGroupName $ResourceGroupName -Name $AppServicePlanName -Tier $Tier -WorkerSize $ScaleLevel        
+        Set-AzAppServicePlan -ResourceGroupName $ResourceGroupName -Name $AppServicePlanName -Tier $Tier -WorkerSize $ScaleLevel        
         "3. Scaling up, scaling in to Instances[$InstanceCount]..."
-        Set-AzureRmAppServicePlan -ResourceGroupName $ResourceGroupName -Name $AppServicePlanName -NumberofWorkers $InstanceCount	
+        Set-AzAppServicePlan -ResourceGroupName $ResourceGroupName -Name $AppServicePlanName -NumberofWorkers $InstanceCount	
         "4. Successfully scaled AppServicePlan[$AppServicePlanName]!"
         }
         
