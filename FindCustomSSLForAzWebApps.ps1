@@ -3,15 +3,19 @@ $ErrorActionPreference = "SilentlyContinue"
 Import-Module -Name Az
 
 $RGs = @()
+$WAssl = @()
 
-$Subscriptions = 'xxxxxxxxxxxxxxxxxxxxxx'
+$Subscriptions = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 Select-AzSubscription -SubscriptionId $Subscriptions
 $RGs += Get-AzResourceGroup
     
 
 foreach($rg in $RGs) {
-        $WAs = Get-AzWebApp -ResourceGroupName $rg.ResourceGroupName -ErrorAction SilentlyContinue
-        foreach ($wa in $WAs) {
-            Get-AzWebAppSSLBinding -ResourceGroupName $rg.ResourceGroupName -WebAppName $wa.Name | Where-Object {$_.Name -like '*wedgewood-inc.com*'} -ErrorAction SilentlyContinue
-        }     
-    }
+    $WAs = Get-AzWebApp -ResourceGroupName $rg.ResourceGroupName
+    foreach ($wa in $WAs) {
+        $WAssl += Get-AzWebAppSSLBinding -ResourceGroupName $rg.ResourceGroupName -WebAppName $wa.Name `
+            | Where-Object {$_.Name -like '*wedgewood-inc.com*'}
+    }     
+}
+
+$WAssl | ft
