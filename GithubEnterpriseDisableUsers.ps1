@@ -11,7 +11,7 @@ $Headers = @{
 $FileLocation = '';
 
 #this will be your URL for the internal github enterprise
-$BaseUrl = 'https://internal-github-enterprise.com/api/v3'
+$BaseUrl = 'https://github-organizationurl.com/api/v3'
 
 
 Import-Csv $FileLocation | `
