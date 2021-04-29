@@ -12,7 +12,7 @@ $sub = ""
 # exact resource id if it has to go cross subscription
 $workspaceid = ""
     
-Get-AzSubscription | Where-Object Name -Like $sub | ` 
+Get-AzSubscription | Where-Object Name -Like $sub | `
 ForEach-Object {
     Select-AzSubscription -Subscription $_.Name
     
