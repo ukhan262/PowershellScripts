@@ -1,4 +1,8 @@
-﻿$ErrorActionPreference = "SilentlyContinue";
+﻿<#
+    
+#>
+
+$ErrorActionPreference = "SilentlyContinue";
 
 Connect-AzAccount;
 
