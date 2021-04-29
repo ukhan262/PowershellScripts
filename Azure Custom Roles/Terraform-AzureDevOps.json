@@ -1,0 +1,19 @@
+
+{
+	"properties": {
+		"roleName": "CUD-Terraform-AzureDevOps",
+		"description": "",
+		"AssignableScopes":  [
+                             "/subscriptions/subid"
+                         ],
+		"permissions": [{
+			"actions": [
+			  "Microsoft.Authorization/roleAssignments/read", 
+			  "Microsoft.Authorization/roleAssignments/write", 
+			  "Microsoft.Authorization/roleAssignments/delete"],
+			"notActions": [],
+			"dataActions": [],
+			"notDataActions": []
+		}]
+	}
+}
