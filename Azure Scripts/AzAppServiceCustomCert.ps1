@@ -17,13 +17,13 @@ ForEach-Object{
 
     $fqdn_new = -join($_.AppName, ".origence.local")
     
-    write-host "setting custom domain" $_.AppName
+    Write-Output "setting custom domain" $_.AppName
     
     Set-AzWebApp -Name $_.AppName -ResourceGroupName $_.ResourceGroupName `
         -HostNames @($fqdn_new)
         
     
-    write-host "setting cert" $_.AppName
+    Write-Output "setting cert" $_.AppName
     
     New-AzWebAppSSLBinding -WebAppName $_.AppName -ResourceGroupName $_.ResourceGroupName -Name $fqdn_new `
         -CertificateFilePath $pfxPath `
@@ -43,7 +43,7 @@ Select-AzSubscription -SubscriptionId $commonSub
 Import-Csv $fileLocation | `
 ForEach-Object{
     try {
-        Write-Host "adding DNS record for " $_.AppName
+        Write-Output "adding DNS record for " $_.AppName
 
         New-AzPrivateDnsRecordSet  `
             -Name $_.AppName `
@@ -53,9 +53,9 @@ ForEach-Object{
             -Ttl 3600 `
             -PrivateDnsRecords (New-AzPrivateDnsRecordConfig -IPv4Address $_.IpAddress)
     
-        Write-Host "DNS recorded added successfully for " $_.AppName   
+        Write-Output "DNS recorded added successfully for " $_.AppName   
     }
     catch {
-        Write-Host "dns zone not added"
+        Write-Output "dns zone not added"
     }  
 }

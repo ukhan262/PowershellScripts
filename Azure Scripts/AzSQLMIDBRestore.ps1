@@ -43,9 +43,9 @@ $params = @{
     try
     {
         Invoke-Sqlcmd  @params -Verbose
-        write-host "restore completed", $SQL_DB_Name_New;
+        Write-Output "restore completed", $SQL_DB_Name_New;
     }
     catch [Microsoft.SqlServer.Management.PowerShell.SqlPowerShellSqlExecutionException]
     {
-        Write-Host $Error[0]
+        Write-Output $Error[0]
     }

@@ -28,7 +28,7 @@ ForEach-Object {
             -EnableMultipleWriteLocations:$false
     }
     catch {
-        Write-Host "update failed"
+        Write-Output "update failed"
     }
 
     $After += Get-AzCosmosDBAccount `

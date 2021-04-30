@@ -18,11 +18,11 @@ if ($serviceplan.sku -ne $updateSkuSize)
     try {
         Stop-AzWebApp -ResourceGroupName $resourcegroup -Name $webapp
         Set-AzAppServicePlan -Name $appserviceplan -ResourceGroupName $resourcegroup -Tier "I3"
-        Write-Host "update successful" 
+        Write-Output "update successful" 
         Start-AzWebApp -ResourceGroupName $resourcegroup -Name $webapp 
     }
     catch {
-        Write-Host "failed to update"
+        Write-Output "failed to update"
     }
     
 }

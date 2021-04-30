@@ -2,10 +2,8 @@
     <#
         .SYNOPSIS
         Find path to specific version of SqlPackage.exe
- 
         .DESCRIPTION
         Finds the path to specific version of SqlPackage.exe
- 
         Written by (c) Dr. John Tunnicliffe, 2019 https://github.com/DrJohnT/PublishDacPac
         This PowerShell script is released under the MIT license http://www.opensource.org/licenses/MIT
     #>

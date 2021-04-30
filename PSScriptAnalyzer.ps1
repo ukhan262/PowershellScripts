@@ -1,4 +1,4 @@
-$psFolders = Get-ChildItem | Select-Object Name
+$psFolders = Get-ChildItem -Directory | Select-Object Name
 foreach ($folder in $psFolders.Name)
 {
   Push-Location $folder

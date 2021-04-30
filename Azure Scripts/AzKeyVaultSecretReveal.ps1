@@ -13,5 +13,5 @@ $keyVaultSecrets = Get-AzKeyVaultSecret -VaultName $keyvault
 foreach ($secret in $keyVaultSecrets.Name)
 {
     $secretInPlainText = $secret.SecretValue | ConvertFrom-SecureString -AsPlainText
-    Write-Host $secret ":" $secretInPlainText
+    Write-Output $secret ":" $secretInPlainText
 }

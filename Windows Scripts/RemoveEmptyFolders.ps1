@@ -1,3 +1,3 @@
 ﻿$tdc="foldername"
-$dirs = gci $tdc -directory -recurse | Where { (gci $_.fullName).count -eq 0 } | select -expandproperty FullName
+$dirs = Get-ChildItem $tdc -directory -recurse | Where-Object { (Get-ChildItem $_.fullName).count -eq 0 } | Select-Object -expandproperty FullName
 $dirs | Foreach-Object { Remove-Item $_ }

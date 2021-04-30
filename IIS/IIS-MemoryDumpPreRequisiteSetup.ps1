@@ -11,7 +11,7 @@ foreach ($folder in $folders)
     }
     else
     {
-        Write-Host "folder exists"
+        Write-Output "folder exists"
     }
 }
 

@@ -35,7 +35,7 @@ foreach ($Proj in $Projects) {
     $Repos = az repos list --organization $Organization --project $Proj | ConvertFrom-Json
     foreach ($Repo in $Repos) {
         if(-not (Test-Path -Path $Repo.name -PathType Container)) {
-            Write-Host "Cloning repo $Proj\$($Repo.Name)"
+            Write-Output "Cloning repo $Proj\$($Repo.Name)"
             git clone $Repo.webUrl
         }
     }

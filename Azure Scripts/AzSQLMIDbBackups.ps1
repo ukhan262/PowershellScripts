@@ -22,7 +22,7 @@ param (
 foreach($instance in $sqlInstanceDatabases)
 {
     $SQL_DB_Name = $instance;
-    Write-Host $SQL_DB_Name;
+    Write-Output $SQL_DB_Name;
 
     
     $setEncryptionOff = -join("use master; ", "alter database [", $SQL_DB_Name, "] set encryption off;")
@@ -37,13 +37,13 @@ foreach($instance in $sqlInstanceDatabases)
     }
     try
     {
-        Write-Host "set encryption off"
+        Write-Output "set encryption off"
         Invoke-Sqlcmd  @params -Verbose
-        Write-Host "___________________________________"
+        Write-Output "___________________________________"
     }
     catch [Microsoft.SqlServer.Management.PowerShell.SqlPowerShellSqlExecutionException]
     {
-        Write-Host $Error[0]
+        Write-Output $Error[0]
     }
 
     $dropencryptionkey = -join("use [", $SQL_DB_Name, "]; ", "DROP DATABASE ENCRYPTION KEY;  ")
@@ -58,13 +58,13 @@ foreach($instance in $sqlInstanceDatabases)
     }
     try
     {
-        Write-Host "drop encryption key"
+        Write-Output "drop encryption key"
         Invoke-Sqlcmd  @params -Verbose
-        Write-Host "___________________________________"
+        Write-Output "___________________________________"
     }
     catch [Microsoft.SqlServer.Management.PowerShell.SqlPowerShellSqlExecutionException]
     {
-        Write-Host $Error[0]
+        Write-Output $Error[0]
     }
 
     Start-Sleep -s 10
@@ -81,13 +81,13 @@ foreach($instance in $sqlInstanceDatabases)
     }
     try
     {
-        Write-Host "shrink log file"
+        Write-Output "shrink log file"
         Invoke-Sqlcmd  @params -Verbose
-        Write-Host "___________________________________"
+        Write-Output "___________________________________"
     }
     catch [Microsoft.SqlServer.Management.PowerShell.SqlPowerShellSqlExecutionException]
     {
-        Write-Host $Error[0]
+        Write-Output $Error[0]
     }
 
     $backupSqlQuery = -join("BACKUP DATABASE [", $SQL_DB_Name, "] TO `
@@ -107,14 +107,14 @@ foreach($instance in $sqlInstanceDatabases)
     }
     try
     {
-        Write-Host "starting backup"
+        Write-Output "starting backup"
         Invoke-Sqlcmd  @params -Verbose
-        write-host "backup completed", $SQL_DB_Name;
-        Write-Host "___________________________________"
+        Write-Output "backup completed", $SQL_DB_Name;
+        Write-Output "___________________________________"
     }
     catch [Microsoft.SqlServer.Management.PowerShell.SqlPowerShellSqlExecutionException]
     {
-        Write-Host $Error[0]
+        Write-Output $Error[0]
     }
 
     $setEncryptionOn = -join("use master; ", "alter database [", $SQL_DB_Name, "] set encryption on;")
@@ -129,13 +129,13 @@ foreach($instance in $sqlInstanceDatabases)
     }
     try
     {
-        Write-Host "set encryption on"
+        Write-Output "set encryption on"
         Invoke-Sqlcmd  @params -Verbose
-        Write-Host "___________________________________"
+        Write-Output "___________________________________"
     }
     catch [Microsoft.SqlServer.Management.PowerShell.SqlPowerShellSqlExecutionException]
     {
-        Write-Host $Error[0]
+        Write-Output $Error[0]
     }
     
 }

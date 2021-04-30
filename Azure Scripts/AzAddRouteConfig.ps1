@@ -20,19 +20,19 @@ $fileLocation = ".\$fileName"
 Import-Csv $fileLocation | `
 ForEach-Object {
     try {
-        Write-Host "Name: " $_.Name;
-        Write-Host "Address Prefix: " $_.AddressPrefix;
-        Write-Host "Adding and setting route config";
+        Write-Output "Name: " $_.Name;
+        Write-Output "Address Prefix: " $_.AddressPrefix;
+        Write-Output "Adding and setting route config";
     
         Add-AzRouteConfig -RouteTable $RouteTable `
                           -Name $_.Name `
                           -AddressPrefix $_.AddressPrefix `
                           -NextHopType "Internet" | Set-AzRouteTable
     
-        Write-host "Record added";
-        Write-Host "------------------------------"  
+        Write-Output "Record added";
+        Write-Output "------------------------------"  
     }
     catch {
-        Write-Host "record not added."
+        Write-Output "record not added."
     }                      
 }

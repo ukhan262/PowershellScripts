@@ -15,7 +15,7 @@ $fileName = ""
 Import-Csv ".\$fileName.csv" |`
 ForEach-Object{
     $reportName = $_.Name+".csv"
-    Write-Host "Subscription Name:"$_.Name;
+    Write-Output "Subscription Name:"$_.Name;
     Select-AzSubscription -Subscription $_.Name
     $report = @()
     $vms = Get-AzVM

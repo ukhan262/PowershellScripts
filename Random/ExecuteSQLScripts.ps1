@@ -22,7 +22,7 @@ foreach ($file in $filesInFolder){
        Remove-Item $destFolderLocation -Force 
     }
     
-    Write-Host "Executing:", $file
+    Write-Output "Executing:", $file
     Invoke-Sqlcmd -ServerInstance $serverInstance `
         -Database $database `
         -Username $username `
@@ -32,13 +32,13 @@ foreach ($file in $filesInFolder){
     
     $SEL = Select-String -Path $destFolderLocation -Pattern $stringToSearchFor
     
-    Write-Host "==========================================================="
+    Write-Output "==========================================================="
     
     if ($SEL -ne $null)
     {
         $SendEmailFlagPerScript = -join("SendEmail",$file.BaseName, ": Yes")
         $FlagsForScript += $SendEmailFlagPerScript
-        Write-Host $file.BaseName, "contains", $SEL
+        Write-Output $file.BaseName, "contains", $SEL
         Write-Output "##vso[task.setvariable variable=SendEmailFlagPerScript;]$true"
         Write-Output "##vso[task.setvariable variable=SendEmailFlagPerScript;isOutput=true]$true"
     }
@@ -46,12 +46,12 @@ foreach ($file in $filesInFolder){
     {
         $SendEmailFlagPerScript = -join("SendEmail",$file.BaseName, ": No")
         $FlagsForScript += $SendEmailFlagPerScript
-        Write-Host $file.BaseName, "does not contains", $SEL
+        Write-Output $file.BaseName, "does not contains", $SEL
         Write-Output "##vso[task.setvariable variable=SendEmailFlagPerScript;]$false"
         Write-Output "##vso[task.setvariable variable=SendEmailFlagPerScript;isOutput=true]$false"
     }
     
 }
 
-Write-Host "==========================================================="
+Write-Output "==========================================================="
 $FlagsForScript

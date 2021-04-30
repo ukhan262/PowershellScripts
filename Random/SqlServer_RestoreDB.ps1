@@ -34,4 +34,4 @@ $dbRestore.RelocateFiles.Add($dbRestoreLog)
 # Call the SqlRestore mathod to complete restore database 
 $dbRestore.SqlRestore($sqlServer)
  
-Write-Host "...SQL Database"$dbname" Restored Successfully..."
+Write-Output "...SQL Database"$dbname" Restored Successfully..."

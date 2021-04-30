@@ -17,7 +17,7 @@ $fileName = ".csv"
 Import-Csv ".\$fileName" |`
 ForEach-Object {
     Select-AzSubscription -Subscription $_.Subscription
-    Write-Host "Before List connection strings"
+    Write-Output "Before List connection strings"
     $Before += Get-AzCosmosDBAccountKey -ResourceGroupName $_.ResourceGroup `
         -Name $_.Name -Type "ConnectionStrings" | ft
     try {
@@ -25,11 +25,11 @@ ForEach-Object {
         -Name $_.Name -Type "Keys" | ft 
     }
     catch {
-        Write-Host "new account key creation failed"
+        Write-Output "new account key creation failed"
     }
     
 
-    Write-Host "After List connection strings"
+    Write-Output "After List connection strings"
     $After += Get-AzCosmosDBAccountKey -ResourceGroupName $_.ResourceGroup `
         -Name $_.Name -Type "ConnectionStrings" | ft
 

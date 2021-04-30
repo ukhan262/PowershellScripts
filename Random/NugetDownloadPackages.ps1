@@ -23,7 +23,7 @@ $response_json.value.versions.version | Out-File .\packageversion.txt
 $filePath = ".\.csv"
 Import-Csv $filePath | `
 ForEach-Object {
-    Write-Host $_.PackageName, $_.PackageVersion
+    Write-Output $_.PackageName, $_.PackageVersion
     $url = -join("https://pkgs.dev.azure.com/qlos/_apis/packaging/feeds/QCommon/nuget/packages/",$_.PackageName,"/versions/",$_.PackageVersion,"/content?api-version=6.1-preview.1")
     $fileLocation = -join(".\nugetpackages\",$_.PackageName,"_",$_.PackageVersion, ".nupkg")
     if (!(Test-Path $fileLocation))

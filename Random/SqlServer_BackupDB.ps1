@@ -28,4 +28,4 @@ $dbBackup.Action="Database"
 #Call the SqlBackup method to complete backup 
 $dbBackup.SqlBackup($sqlServer)
  
-Write-Host "...Backup of the database"$dbname" completed..."
+Write-Output "...Backup of the database"$dbname" completed..."

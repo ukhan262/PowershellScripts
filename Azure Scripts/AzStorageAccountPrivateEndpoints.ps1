@@ -68,9 +68,9 @@ foreach ($grouptype in $grouptypeid)
 
     $privateEndPoint = Get-AzPrivateEndpoint -Name $privateEndPointName
     $ipconfig = $privateEndPoint.CustomDnsConfigs
-    write-host "ipconfig object: "$ipconfig
+    Write-Output "ipconfig object: "$ipconfig
     $ipaddress = $ipconfig.IpAddresses
-    write-host "ipaddress: " $ipaddress    
+    Write-Output "ipaddress: " $ipaddress    
 
     ##############################################################################################
     ##############################################################################################
@@ -106,13 +106,13 @@ foreach ($grouptype in $grouptypeid)
     }
     else
     {
-        Write-Host $checkExistingLink.Name " already exists"
+        Write-Output $checkExistingLink.Name " already exists"
     }
 
     $checkDNSRecord = Get-AzPrivateDnsRecordSet -Name $storageAccountName -RecordType A -ZoneName $privateZoneName -ResourceGroupName $dnsZoneRgName
     if ($checkDNSRecord.Name -ne $storageAccountName)
     {
-        Write-Host "Adding DNS record"
+        Write-Output "Adding DNS record"
         New-AzPrivateDnsRecordSet  `
                -Name $storageAccountName `
                -RecordType A `
@@ -124,6 +124,6 @@ foreach ($grouptype in $grouptypeid)
      }
      else
      {
-        Write-Host "DNS record already exists: " $checkDNSRecord.Name
+        Write-Output "DNS record already exists: " $checkDNSRecord.Name
      }
 }

@@ -17,7 +17,7 @@ $BaseUrl = 'https://github-organizationurl.com/api/v3'
 Import-Csv $FileLocation | `
 ForEach-Object{
     #this will be whatever the column name is in the excel sheet
-    Write-host "making change for this user: " $_.username
+    Write-Output "making change for this user: " $_.username
 
     #setting up the api url
     $uri = -join($BaseUrl,"/users/",$_.username,"/suspended")

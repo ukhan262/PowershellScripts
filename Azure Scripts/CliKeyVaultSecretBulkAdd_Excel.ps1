@@ -16,8 +16,8 @@ ForEach-Object{
     $secretId = (az keyvault secret set -n $secretName --vault-name $keyvaultName --value $secretValue | ConvertFrom-Json).id
     $secretId
     
-    write-host "Value 0 =" $secretName
-    write-host "Value 1 =" $secretValue
+    Write-Output "Value 0 =" $secretName
+    Write-Output "Value 1 =" $secretValue
 }
 
  
