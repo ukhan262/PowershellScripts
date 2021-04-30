@@ -1,5 +1,4 @@
 # PowershellScripts
-Build Validation
 ![Build Workflow](https://github.com/ukhan262/PowershellScripts/actions/workflows/build.yml/badge.svg)
 ## Azure Scripts
 This contains scripts to automate daily tasks.
