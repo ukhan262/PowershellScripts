@@ -4,6 +4,9 @@
     - subscription name
     - application gateway name
     - resource group name
+
+    The console must have a connection to Azure before running.
+    Connect-AzAccount
 #>
 
 [CmdletBinding()]
