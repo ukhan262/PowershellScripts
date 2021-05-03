@@ -1,12 +1,34 @@
+<#
+    .SYNOPSIS
+        This script exports the details on all the users on what groups they 
+        are part of inside the organizations.
+        This uses az devops cli
+
+    .DESCRIPTION
+        This script requires couple of parameters
+            - $PAT
+            - $Organization
+        Commands Used:
+            - az devops login
+            - az devops cpnfigure
+            - az devops user list
+            - az devops security group membership list
+
+    .EXAMPLE
+        .\CliDevOpsListUsers.ps1 -PAT "abcdefghijklmnopqrstuvwxyz" -Organization "https://dev.azure.com/organization"
+
+#>
 Param
 (
-    [string]$PAT,
-    [string]$Organization
+    [Parameter(Mandatory)]
+    [string]$PAT = $(throw "$PAT is required"),
+    [Parameter(Mandatory)]
+    [string]$Organization = $(throw "$Organization is required")
 )
 
 $UserGroups = @()
 
-echo $PAT | az devops login --org $Organization
+Write-Output $PAT | az devops login --org $Organization
 
 az devops configure --defaults organization=$Organization
 
@@ -26,5 +48,13 @@ foreach($au in $allUsers.members)
                                             }
     }
 }
-
-$UserGroups | ConvertTo-Json | Out-File -FilePath "$home\desktop\UserGroups.json"
+if (Test-Path .\UserGroups.json)
+{
+    Remove-Item .\UserGroups.json
+}
+if (Test-Path .\UserGroups.csv)
+{
+    Remove-Item .\UserGroups.csv
+}
+$UserGroups | ConvertTo-Json | Out-File -FilePath .\UserGroups.json
+$UserGroups | ConvertTo-Csv | Out-File -FilePath .\UserGroups.csv
