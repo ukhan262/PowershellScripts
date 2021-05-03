@@ -3,6 +3,7 @@
 $sub = "";
 az login
 az account set --subscription $sub
+az account show
 
 $keyvaultName     = "kvname"
  
