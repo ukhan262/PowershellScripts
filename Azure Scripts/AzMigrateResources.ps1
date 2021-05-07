@@ -33,7 +33,7 @@
         .\AzMigrateResources.ps1 -clientId "" -tenantId "" -clientSecret "" -sourceSub "sourceSubName" -sourceResourceGroup "rgName" -resourceType Microsoft.DocumentDB/databaseAccounts -resourceName "cosdb-migration-sbx-01" -destinationSub "destSubName" -destinationResourceGroup "destRgName"
     
     .EXAMPLE
-        .\AzMigrateResources.ps1 -clientId "" -tenantId "" -clientSecret "" -sourceSub "sourceSubName" -sourceResourceGroup "rgName" -resourceType Microsoft.Storage/storageAccounts -resourceName "st-migration-sbx-01" -destinationSub "destSubName" -destinationResourceGroup "destRgName"
+        .\AzMigrateResources.ps1 -clientId "" -tenantId "" -clientSecret "" -sourceSub "NonProd-West" -sourceResourceGroup "rg-ent-eddms-dev-01" -resourceType Microsoft.Storage/storageAccounts -resourceName "stenteddmsdev01" -destinationSub "NonProd-West" -destinationResourceGroup "rg-ent-eddms-dev-01"
 
 #>
 

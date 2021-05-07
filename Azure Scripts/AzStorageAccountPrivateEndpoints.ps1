@@ -28,32 +28,48 @@ param (
 )
 # Connect-AzAccount
 
-$grouptypeid = @("blob","queue","table","file")
+$grouptypeid = @("queue")
 foreach ($grouptype in $grouptypeid)
 {
     Select-AzSubscription -Subscription $storageAccountSubscriptionName
 
-    $storageAccount = Get-AzStorageAccount -ResourceGroupName $rgName -Name $storageAccountName
+    try{
+        $storageAccount = Get-AzStorageAccount -ResourceGroupName $rgName -Name $storageAccountName -ErrorAction Stop
+    }
+    catch {
+        Write-Host $storageAccount.StorageAccountName "does not exist" -f Yellow
+    }
     ## Create private endpoint connection. ##
     $parameters1 = @{
         Name = -join("pe-",$grouptype,"-",$storageAccountName)
         PrivateLinkServiceId = $storageAccount.ID
         GroupID = $grouptype
     }
+    try {
+        $privateEndpointConnection = New-AzPrivateLinkServiceConnection @parameters1 -ErrorAction Stop
+    }
+    catch {
+        Write-Host "already exists"
+        $_.Exception
+    }
     
-    $privateEndpointConnection = New-AzPrivateLinkServiceConnection @parameters1
 
 
     ## Place virtual network into variable. ##
     #
+    try {
+        $vnet = Get-AzVirtualNetwork -ResourceGroupName $vnetrg -Name $vnetName -ErrorAction Stop
+        ## Get Subnet into variable
+        $subnet = $vnet | Select-Object -ExpandProperty subnets | Where-Object Name -eq $subnetName
+        ## Disable private endpoint network policy ##
+        $subnet.PrivateEndpointNetworkPolicies = "Disabled"
+        $vnet | Set-AzVirtualNetwork       
+    }
+    catch {
+        Write-Host $vnetName "does not exist" -ForegroundColor Yellow
+        $_.Exception
+    }
 
-    $vnet = Get-AzVirtualNetwork -ResourceGroupName $vnetrg -Name $vnetName
-
-    ## Get Subnet into variable
-    $subnet = $vnet | Select-Object -ExpandProperty subnets | Where-Object Name -eq $subnetName
-    ## Disable private endpoint network policy ##
-    $subnet.PrivateEndpointNetworkPolicies = "Disabled"
-    $vnet | Set-AzVirtualNetwork
 
     # ## Create private endpoint
     $parameters2 = @{
@@ -63,14 +79,28 @@ foreach ($grouptype in $grouptypeid)
         Subnet = $subnet
         PrivateLinkServiceConnection = $privateEndpointConnection
     }
-    New-AzPrivateEndpoint @parameters2
+    try {
+        New-AzPrivateEndpoint @parameters2 -ErrorAction Stop
+    }
+    catch {
+        Write-Host $parameters2.Name "failed to create" -ForegroundColor Yellow
+        $_.Exception        
+    }
+    
     $privateEndPointName = -join("pe-",$grouptype,"-",$storageAccountName)
 
-    $privateEndPoint = Get-AzPrivateEndpoint -Name $privateEndPointName
-    $ipconfig = $privateEndPoint.CustomDnsConfigs
-    Write-Output "ipconfig object: "$ipconfig
-    $ipaddress = $ipconfig.IpAddresses
-    Write-Output "ipaddress: " $ipaddress    
+    try {
+        $privateEndPoint = Get-AzPrivateEndpoint -Name $privateEndPointName
+        $ipconfig = $privateEndPoint.CustomDnsConfigs
+        Write-Output "ipconfig object: "$ipconfig
+        $ipaddress = $ipconfig.IpAddresses
+        Write-Output "ipaddress: " $ipaddress    
+    }
+    catch {
+        Write-Host "failed to get the new private endpoint details" -ForegroundColor Yellow
+        $_.Exception
+    }
+    
 
     ##############################################################################################
     ##############################################################################################
@@ -89,7 +119,13 @@ foreach ($grouptype in $grouptypeid)
         ResourceGroupName = $dnsZoneRgName
         Name = $privateZoneName
     }
-    $zone = Get-AzPrivateDnsZone @parameters1
+    try {
+        $zone = Get-AzPrivateDnsZone @parameters1        
+    }
+    catch {
+        Write-Host "failed to get the DNS ZOne:" $privateZoneName
+    }
+    
 
     ## Create dns network link. ##
     $parameters2 = @{
@@ -103,6 +139,7 @@ foreach ($grouptype in $grouptypeid)
     if ($checkExistingLink.Name -ne $privateDnsVirtualNetworkLinkName)
     { 
         $link = New-AzPrivateDnsVirtualNetworkLink @parameters2
+        $link
     }
     else
     {
@@ -110,7 +147,13 @@ foreach ($grouptype in $grouptypeid)
     }
 
     $checkDNSRecord = Get-AzPrivateDnsRecordSet -Name $storageAccountName -RecordType A -ZoneName $privateZoneName -ResourceGroupName $dnsZoneRgName
-    if ($checkDNSRecord.Name -ne $storageAccountName)
+    if ($checkDNSRecord)
+	{
+		Remove-AzPrivateDnsRecordSet -zone $privateZoneName -name $storageAccountName -RecordType A
+		[bool] $dnsRecordDeleted = $true
+	}
+	
+	if ($dnsRecordDeleted)
     {
         Write-Output "Adding DNS record"
         New-AzPrivateDnsRecordSet  `
