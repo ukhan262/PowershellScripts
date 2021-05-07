@@ -18,7 +18,7 @@ foreach ($folder in $folders)
 #Step 2. Copy the bat file
 $dumpfileDestinationLocation = "C:\autodump\bin\"
 
-Get-ChildItem \\h-fileshare.cudirect.com\common\Umar\dump.bat | Copy-Item -Destination $dumpfileDestinationLocation
+Get-ChildItem location\dump.bat | Copy-Item -Destination $dumpfileDestinationLocation
 cd $dumpfileDestinationLocation; ls;
 
 #Step 3. Modify permissions on folder
