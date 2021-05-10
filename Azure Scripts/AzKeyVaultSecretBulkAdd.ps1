@@ -1,10 +1,16 @@
-﻿# Connect-AzAccount
+﻿[CmdletBinding()]
+param (
+    [Parameter(mandatory)]
+    [string]
+    $subscription = "",
+    [string]
+    $keyvaultName = ""
+    
+)
 
-$subscription = ""
-$keyvaultName = ""
+# Connect-AzAccount
 
-
-$fileLocation = ".\embeddedbisecrets.csv"
+$fileLocation = ".\kvsecrets.csv"
 
 # Select-AzSubscription -Subscription $subscription
 Import-Csv $fileLocation | `
