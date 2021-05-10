@@ -1,18 +1,15 @@
-﻿Select-AzSubscription -Subscription "sub-name"
-$keyvaultName = "kv-name"
+﻿# Connect-AzAccount
+
+$subscription = ""
+$keyvaultName = ""
 
 
-# if a value is a JSON object this is how to add it
-$Secrets = @{
-    "service-specific-azkv-secrets-name"         = "value"
+$fileLocation = ".\embeddedbisecrets.csv"
 
+# Select-AzSubscription -Subscription $subscription
+Import-Csv $fileLocation | `
+ForEach-Object {
+    write-host $_.KeyName
+    $Secret = ConvertTo-SecureString -String $_.SecretValue -AsPlainText -Force
+    Set-AzKeyVaultSecret -VaultName $keyvaultName -Name $_.KeyName -SecretValue $Secret
 }
-
- 
-foreach($name in $Secrets.Keys)
-{
-    $Secret = ConvertTo-SecureString -String $Secrets[$name] -AsPlainText -Force
-    Set-AzKeyVaultSecret -VaultName $keyvaultName -Name $name -SecretValue $Secret
-}
-
- 
