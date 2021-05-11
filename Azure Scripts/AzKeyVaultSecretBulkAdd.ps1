@@ -11,6 +11,7 @@
             - $keyvaultNam
             - $file
         Commands Used:
+            - Connect-AzAccount
             - Set-AzKeyVaultSecret
 
     .EXAMPLE
@@ -22,8 +23,12 @@ param (
     [Parameter(mandatory)]
     [string]
     $subscription = "",
+    [Parameter(mandatory)]
     [string]
-    $keyvaultName = ""
+    $keyvaultName = "",
+    [Parameter(mandatory)]
+    [string]
+    $file = ""
     
 )
 
@@ -34,7 +39,8 @@ $fileLocation = ".\$file.csv"
 # Select-AzSubscription -Subscription $subscription
 Import-Csv $fileLocation | `
 ForEach-Object {
-    write-host $_.KeyName
+    write-host $_.KeyName -ForegroundColor Yellow
+    Write-Host $_.SecretValue -ForegroundColor Yellow
     $Secret = ConvertTo-SecureString -String $_.SecretValue -AsPlainText -Force
     Set-AzKeyVaultSecret -VaultName $keyvaultName -Name $_.KeyName -SecretValue $Secret
 }
