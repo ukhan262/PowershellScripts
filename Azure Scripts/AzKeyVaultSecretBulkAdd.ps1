@@ -37,7 +37,7 @@ Connect-AzAccount
 
 $fileLocation = ".\$file.csv"
 
-# Select-AzSubscription -Subscription $subscription
+Select-AzSubscription -Subscription $subscription
 Import-Csv $fileLocation | `
 ForEach-Object {
     write-host $_.KeyName -ForegroundColor Yellow
