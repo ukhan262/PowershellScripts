@@ -13,6 +13,7 @@
         Commands Used:
             - Connect-AzAccount
             - Set-AzKeyVaultSecret
+        The user or the service principle must have GET,SET permissions on the KV
 
     .EXAMPLE
         .\AzKeyVaultSecretBulkAdd.ps1 -subscription "subname" -keyvaultName "kvname" -file "filenamewithoutextension"
@@ -32,7 +33,7 @@ param (
     
 )
 
-# Connect-AzAccount
+Connect-AzAccount
 
 $fileLocation = ".\$file.csv"
 
