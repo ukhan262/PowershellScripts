@@ -1,3 +1,4 @@
 .vscode/launch.json
 Azure Scripts/**.csv
 Azure Scripts/**.txt
+.env

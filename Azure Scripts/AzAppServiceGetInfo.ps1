@@ -8,7 +8,7 @@
             - $hostName
         Commands Used:
             - Connect-AzAccount
-            - SGet-AzWebApp
+            - Get-AzWebApp
 
     .EXAMPLE
         .\AzAppServiceGetInfo.ps1 -outputFile "appinfo" -hostName "customdomainname"
