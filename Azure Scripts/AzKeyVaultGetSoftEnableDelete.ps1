@@ -46,7 +46,7 @@ foreach($sub in $subscriptions)
         {
             Write-Host $kv.VaultName -ForegroundColor Yellow
             $KeyVaults += Get-AzKeyVault -VaultName $kv.VaultName `
-                            | Select-Object @{N='SubscriptionId';E={$_.ResourceId.Split("/")[2]}}, ResourceGroupName, VaultName, EnableSoftDelete -ErrorAction Stop
+                            | Select-Object @{N='SubscriptionId';E={$_.ResourceId.Split("/")[2]}}, ResourceGroupName, VaultName, EnableSoftDelete -ErrorAction Stop `
                             | Where-Object EnableSoftDelete -NE $softDelete
         }
     }
