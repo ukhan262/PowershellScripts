@@ -2,3 +2,4 @@
 Azure Scripts/**.csv
 Azure Scripts/**.txt
 .env
+*.pfx
