@@ -11,7 +11,7 @@
             - Get-AzWebApp
 
     .EXAMPLE
-        .\AzAppServiceGetInfo.ps1 -outputFile "appinfo" -hostName "customdomainname"
+        .\AzAppServiceGetInfo.ps1 -outputFile "appinfo1" -hostName "customdomain.com"
 
 #>
 
@@ -20,11 +20,11 @@ param (
     [Parameter(Mandatory)]
     [string] $outputFile = $(throw "$outputFile is required"),
     
-    [Parameter(AttributeValues)]
+    [Parameter(Mandatory)]
     [string] $hostName = $(throw "$hostName is required")
 )
 
-Connect-AzAccount
+# Connect-AzAccount
 $subscriptions = Get-AzSubscription
 $subscriptions
 
@@ -35,7 +35,7 @@ foreach($sub in $subscriptions) {
     $appsInfo += Get-AzWebApp `
         | foreach-object {$_} `
         | Where-Object {$_.EnabledHostNames -match $hostName} `
-        | Select-Object Name, ResourceGroup, @{N='SubscriptionId';E={$_.Id.Split("/")[2]}}
+        | Select-Object @{name='AppName';expression={$_.Name}} , ResourceGroup, @{name='SubscriptionId';expression={$_.Id.Split("/")[2]}}, @{name='URL';expression={$_.Hostnames.Split(",")[0]}}
 }
 
 $appsInfo | Export-Csv -Path ".\$outputFile.csv"
