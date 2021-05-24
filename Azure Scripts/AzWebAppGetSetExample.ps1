@@ -26,6 +26,3 @@ if ($serviceplan.sku -ne $updateSkuSize)
     }
     
 }
-
-
-

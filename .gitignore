@@ -3,3 +3,4 @@ Azure Scripts/**.csv
 Azure Scripts/**.txt
 .env
 *.pfx
+Azure Scripts/test.ps1
