@@ -2,13 +2,14 @@
 $ErrorActionPreference = 'SilentlyContinue'
 
 param(
-    [string]$Organization = ""
+    [string]$Organization = "CloudiFyiSolutions"
 )
 
 if ($Organization -notmatch '^https?://dev.azure.com/\w+') {
     $Organization = "https://dev.azure.com/$Organization"
 }
 
+az devops login
 # Make sure we are signed in to Azure
 $AccountInfo = az account show 2>&1
 try {
@@ -25,7 +26,7 @@ if ($null -eq $DevOpsExtension) {
 }
 
 $Projects = az devops project list --organization $Organization --query 'value[].name' -o tsv
-
+$Projects
 foreach ($Proj in $Projects) {
     if (-not (Test-Path -Path ".\$Proj" -PathType Container)) {
         New-Item -Path $Proj -ItemType Directory |
@@ -33,10 +34,14 @@ foreach ($Proj in $Projects) {
         Push-Location
     }
     $Repos = az repos list --organization $Organization --project $Proj | ConvertFrom-Json
+    write-host "printing all the repos";
+    $Repos
     foreach ($Repo in $Repos) {
-        if(-not (Test-Path -Path $Repo.name -PathType Container)) {
+        cd $Proj
+        # mkdir $Repo.name
             Write-Output "Cloning repo $Proj\$($Repo.Name)"
             git clone $Repo.webUrl
-        }
+            cd ..;
+        
     }
 }
